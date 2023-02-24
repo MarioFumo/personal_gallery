@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of, switchMap, timeout } from 'rxjs';
 import { Album } from '../pages/gallery/om/album.model';
 import { Photo } from '../pages/gallery/om/photo.model';
 import { User } from '../pages/gallery/om/user.model';
@@ -19,7 +19,12 @@ export class GalleryService {
     if (user)
       return of([user])
     let params = new HttpParams().set('id', idUser);
-    return this.http.get<User[]>(this.PREFIX + "/users", { params })
+    return of('DUMMY').pipe(
+      delay(5000),
+      switchMap(()=>{
+        return this.http.get<User[]>(this.PREFIX + "/users", { params })
+      }) 
+    )
   }
 
   getAlbums(idUser: number): Observable<Album[]> {

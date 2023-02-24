@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { from, Observable } from 'rxjs';
-import { concatMap, delay, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { forkJoin, from, Observable } from 'rxjs';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { GalleryService } from 'src/app/services/gallery.service';
 import { Album } from './om/album.model';
 import { User } from './om/user.model';
@@ -22,17 +22,16 @@ export class GalleryComponent {
   }
 
   getCover(idUser: number): Observable<Album> {
-    return this.galleryService.getUser(idUser).pipe(
-      map((users) => users[0]),
-      tap((user) => {
-        this.galleryService.saveSessionUser(user);
-        this.user = user;
+    return forkJoin([this.galleryService.getUser(idUser), this.galleryService.getAlbums(idUser)]).pipe(
+      map((response) => {
+        return { user: response[0][0], albums: response[1] }
       }),
-      switchMap((user) => {
-        return this.galleryService.getAlbums(user.id)
+      tap((response) => {
+        this.galleryService.saveSessionUser(response.user);
+        this.user = response.user;
       }),
-      switchMap((albums) => {
-        return from(albums).pipe(
+      switchMap((response) => {
+        return from(response.albums).pipe(
           mergeMap((album) => {
             return this.galleryService.getPhotos(album.id).pipe(
               map((photos) => {
