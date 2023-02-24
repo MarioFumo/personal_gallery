@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.card .btn {
+    position: absolute;
+    bottom: 0;
+    opacity: 0.3;
+    transition: 300ms;
+
+    &:hover {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,13 @@
+<div class="row w-100 text-center m-0 justify-content-around">
+    <h1>Welcome {{user?.name}}</h1>
+
+    <!-- card albums -->
+    <div *ngFor="let album of albums" class="card m-1" style="width: 18rem;">
+        <img class="card-img-top" [src]="album.photos ? album.photos[0].thumbnailUrl : ''" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{album.title}}</h5>
+            <a (click)="openAlbum(album)" class="btn btn-primary">Open album</a>
+        </div>
+    </div>
+
+</div>

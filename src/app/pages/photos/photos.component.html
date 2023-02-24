@@ -1,0 +1,12 @@
+<div class="row w-100 text-center m-0 justify-content-around">
+    <h1>{{user?.name}} this is your album: "{{album?.title}}"</h1>
+
+    <!-- card photos -->
+    <div *ngFor="let photo of album?.photos" class="card m-1" style="width: 18rem;">
+        <img class="card-img-top" [src]="photo?.url" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{photo.title}}</h5>
+            <a (click)="deletePhoto(photo.id)" class="btn btn-danger">Delete Photo</a>
+        </div>
+    </div>
+</div>
