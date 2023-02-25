@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'PersonalGallery';
+
+  deleteCache(){
+    sessionStorage.removeItem('user');
+    window.alert('Cache deleted');
+  }
 }
